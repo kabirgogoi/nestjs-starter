@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@AppRoot/*": ["src/*"],
+      "@Common/*": ["src/common/*"],
+      "@Database/*": ["src/database/*"],
+      "@Auth/*": ["src/auth/*"],
+      "@Acl/*": ["src/casl/*"],
+      "@Users/*": ["src/users/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}

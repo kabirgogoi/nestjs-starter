@@ -3,7 +3,7 @@ import { APP_INTERCEPTOR, APP_GUARD } from '@nestjs/core';
 import { AppController } from '@AppRoot/app.controller';
 import { AppService } from '@AppRoot/app.service';
 import { DatabaseModule } from '@Database/database.module';
-import { JwtAuthGuard } from '@Auth/guards/jwt-auth.guard';
+import { CookieAuthenticationGuard } from '@Auth/guards';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { CaslModule } from './casl/casl.module';
@@ -15,7 +15,7 @@ import { CaslModule } from './casl/casl.module';
     AppService,
     {
       provide: APP_GUARD,
-      useClass: JwtAuthGuard,
+      useClass: CookieAuthenticationGuard,
     },
     {
       provide: APP_INTERCEPTOR,

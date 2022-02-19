@@ -24,6 +24,7 @@ export class UsersController {
     return await this.usersService.create(createUserDto);
   }
 
+  @Public()
   @Get()
   findAll() {
     return this.usersService.findAll();

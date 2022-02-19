@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
 import { Strategy, ExtractJwt } from 'passport-jwt';
-import { jwtConstants } from '../constants/jwt.constants';
+import { refreshTokenConstants } from '../constants/jwt.constants';
 import { JwtPayload } from '../dto/jwt-payload.dto';
 
 interface FullJwtPayload extends JwtPayload {
@@ -19,7 +19,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: jwtConstants.secret,
+      secretOrKey: refreshTokenConstants.secret,
       passReqToCallback: true,
     });
   }

@@ -1,54 +1,47 @@
 import {
   Controller,
+  Get,
   Post,
   Req,
   HttpCode,
   HttpStatus,
   UseGuards,
-  UnauthorizedException,
-  Body,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { AuthService } from '@Auth/services';
-import { Public, GetCurrentUser } from '@Auth/decorators';
-import { RefreshTokenGuard } from '@Auth/guards';
-import { LoginDto } from '@Auth/dto';
+import { Public } from '@Auth/decorators';
+import { LocalAuthGuard, CookieAuthenticationGuard } from '@Auth/guards';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
-
   @Public()
   @Post('login')
+  @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.OK)
-  async login(@Body() loginDto: LoginDto) {
-    return await this.authService.login(loginDto);
+  async login(@Req() req: Request) {
+    const user = req.user;
+    return user;
   }
 
   @Post('logout')
+  @UseGuards(CookieAuthenticationGuard)
   @HttpCode(HttpStatus.OK)
-  async logout(@Req() request: Request) {
-    const user = request.user;
-
-    //TODO Set up a reddis database to maintain blacklisted jwt tokens
-    // Invalidate both access & refresh token
+  async logout(@Req() req: Request) {
+    req.logOut();
+    req.session.cookie.maxAge = 0;
 
     return {
-      msg: 'Loged out',
-      ...user,
+      success: true,
+      msg: 'Logout success',
     };
   }
 
-  @Public()
-  @UseGuards(RefreshTokenGuard)
-  @HttpCode(HttpStatus.OK)
-  @Post('refreshtoken')
-  async createNewJwt(
-    @GetCurrentUser('id') userId: number,
-    @GetCurrentUser('refreshToken') refreshToken: string,
-  ) {
-    if (!userId || !refreshToken) throw new UnauthorizedException();
-
-    return await this.authService.updateAccessToken(userId, refreshToken);
+  @Get('profile')
+  @UseGuards(CookieAuthenticationGuard)
+  async profile(@Req() req: Request) {
+    return {
+      title: 'User profile',
+      userId: req.user.id,
+      email: req.user.email,
+    };
   }
 }

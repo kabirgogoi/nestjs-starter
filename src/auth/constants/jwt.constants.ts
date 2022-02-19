@@ -1,12 +1,13 @@
 import { JwtSignOptions } from '@nestjs/jwt';
 
-export const jwtConstants: JwtSignOptions = {
-  secret: process.env.JWT_SECRECT,
-  issuer: 'nest-typeorm-starter.com',
+export const accessTokenConstants: JwtSignOptions = {
+  issuer: process.env.TOKEN_ISSUER,
+  secret: process.env.ACCESS_TOKEN_SECRECT,
   expiresIn: '60s',
 };
 
 export const refreshTokenConstants: JwtSignOptions = {
-  ...jwtConstants,
+  issuer: process.env.TOKEN_ISSUER,
+  secret: process.env.REFRESH_TOKEN_SECRECT,
   expiresIn: '6d',
 };
